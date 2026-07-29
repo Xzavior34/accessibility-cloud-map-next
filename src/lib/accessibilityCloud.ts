@@ -18,10 +18,14 @@ import type { TileCoord } from './tileMath';
 // 5 min stale, CDN-backed, fast). Use the uncached base URL only for
 // real-time needs (e.g. right after submitting an edit).
 //
-// NOTE: this matches the exact URL shown on the account dashboard's own
-// "Getting started" curl example for the real app token in use — trusted
-// over the general repo docs, since it's specific to this account/token.
-const BASE_URL = 'https://accessibility-cloud.freetls.fastly.net';
+// NOTE: the account dashboard's own "Getting started" example shows a URL
+// without "-v2" — that was tried and returned a hard 503 (service
+// unavailable) for every request, suggesting that page's example is stale.
+// This "-v2" URL is what accessibility.cloud's own GitHub API docs
+// document as the current, maintained, CDN-cached endpoint, and it
+// responds correctly (including real API-level errors, not infra
+// failures), so it's used here instead.
+const BASE_URL = 'https://accessibility-cloud-v2.freetls.fastly.net';
 
 // Real app token for the "Comfeee" app on accessibility.cloud. Falls back to
 // Sozialhelden's public demo token (from their example widget repo) only if
