@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { DiagnosticErrorBoundary } from './DiagnosticErrorBoundary';
 
 // MapApp uses MapLibre GL (needs `window`) and browser-only APIs
 // (geolocation, localStorage), so it's loaded client-only via next/dynamic.
@@ -49,5 +50,9 @@ export function MapAppLoader() {
     return <LoadingScreen />;
   }
 
-  return <MapApp />;
+  return (
+    <DiagnosticErrorBoundary>
+      <MapApp />
+    </DiagnosticErrorBoundary>
+  );
 }

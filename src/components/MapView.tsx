@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Map as MapLibreMap,
   Marker,
@@ -70,6 +70,7 @@ export function MapView({
   const mapRef = useRef<MapLibreMap | null>(null);
   const loadedRef = useRef(false);
   const userMarkerRef = useRef<Marker | null>(null);
+  const [mapError, setMapError] = useState<string | null>(null);
   const onViewportChangeRef = useRef(onViewportChange);
   const onSelectPlaceRef = useRef(onSelectPlace);
   const placesRef = useRef(places);
@@ -95,6 +96,15 @@ export function MapView({
       attributionControl: { compact: true },
     });
     mapRef.current = map;
+
+    map.on('error', (e) => {
+      // MapLibre emits this for style/tile/network failures — it does NOT
+      // throw a JS exception, so React error boundaries and window error
+      // listeners never see it. This is the most likely real cause of a
+      // silently blank map, so it's surfaced directly here.
+      console.error('[MapLibre error]', e.error);
+      setMapError(e.error?.message || 'Failed to load the map (style or tiles).');
+    });
 
     map.addControl(new NavigationControl({ showCompass: false }), 'top-right');
     map.addControl(new GeolocateControl({ trackUserLocation: true }), 'top-right');
@@ -257,5 +267,22 @@ export function MapView({
     }
   }, [userLocation]);
 
-  return <div ref={containerRef} className="absolute inset-0" />;
+  return (
+    <>
+      <div ref={containerRef} className="absolute inset-0" />
+      {mapError && (
+        <div className="fixed inset-0 z-[9998] bg-red-50 overflow-auto p-4 font-mono text-sm">
+          <p className="font-sans font-bold text-red-800 text-base mb-2">
+            ⚠ MapLibre error (diagnostic mode)
+          </p>
+          <pre className="whitespace-pre-wrap text-red-900 bg-white border border-red-200 rounded-lg p-3">
+            {mapError}
+          </pre>
+          <p className="font-sans text-xs text-gray-500 mt-3">
+            Screenshot this whole screen and send it — this text is the actual cause.
+          </p>
+        </div>
+      )}
+    </>
+  );
 }
