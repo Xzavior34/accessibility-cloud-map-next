@@ -42,7 +42,6 @@ export function MapAppLoader() {
     // SSR-matching loading screen to the client-only map. There's no way
     // to know this without an effect, since that's precisely what "runs
     // after commit" means.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
