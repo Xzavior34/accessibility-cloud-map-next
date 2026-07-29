@@ -23,6 +23,9 @@ const STATUS_LABEL: Record<string, string> = {
   unknown: 'Accessibility unknown',
 };
 
+// NOTE: see the same note in PlacesList.tsx — these must appear as literal
+// text for Tailwind to generate them in production:
+// text-full bg-full/10 text-partial bg-partial/10 text-none bg-none/10 text-unknown bg-unknown/10
 const STATUS_COLOR: Record<string, string> = {
   full: 'text-full bg-full/10',
   partial: 'text-partial bg-partial/10',

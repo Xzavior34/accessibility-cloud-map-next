@@ -16,6 +16,13 @@ interface PlacesListProps {
   onClose: () => void;
 }
 
+// NOTE: these must appear as literal, complete class names somewhere for
+// Tailwind's production build to detect and generate them — it only scans
+// literal text in source files, not runtime object values, so building
+// class names via `${STATUS_DOT[status]}` alone causes them to be silently
+// dropped from the production CSS bundle (works in dev, invisible in prod).
+// This comment keeps them present as literal text:
+// bg-full bg-partial bg-none bg-unknown
 const STATUS_DOT: Record<string, string> = {
   full: 'bg-full',
   partial: 'bg-partial',

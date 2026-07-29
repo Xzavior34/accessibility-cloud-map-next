@@ -202,7 +202,22 @@ export function MapView({
 
     map.on('moveend', emitViewport);
 
+    // Safeguard against a well-known MapLibre/Mapbox GL gotcha: if the
+    // container's layout size isn't fully settled at the exact moment the
+    // map is constructed (e.g. differing layout/paint timing between dev
+    // and a production build), the internal canvas can end up sized 0x0
+    // and never recovers on its own — appearing as a blank map with no
+    // error at all. Explicitly telling it to resize whenever the
+    // container's actual size changes fixes this regardless of cause.
+    const resizeObserver = new ResizeObserver(() => {
+      map.resize();
+    });
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
     return () => {
+      resizeObserver.disconnect();
       map.remove();
       mapRef.current = null;
       loadedRef.current = false;
