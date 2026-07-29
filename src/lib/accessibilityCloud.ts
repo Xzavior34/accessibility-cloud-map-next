@@ -17,14 +17,16 @@ import type { TileCoord } from './tileMath';
 // The cached base URL is recommended for all map-browsing use cases (up to
 // 5 min stale, CDN-backed, fast). Use the uncached base URL only for
 // real-time needs (e.g. right after submitting an edit).
-const BASE_URL = 'https://accessibility-cloud-v2.freetls.fastly.net';
+//
+// NOTE: this matches the exact URL shown on the account dashboard's own
+// "Getting started" curl example for the real app token in use — trusted
+// over the general repo docs, since it's specific to this account/token.
+const BASE_URL = 'https://accessibility-cloud.freetls.fastly.net';
 
-// NOTE: this is a placeholder — it's the public demo token Sozialhelden
-// ships in their own official example widget repo (accessibility-cloud-js),
-// used for showcasing the API. It is NOT a token generated for this project
-// specifically. Replace it with your own free token before relying on this
-// for anything beyond initial testing — sign up at https://accessibility.cloud,
-// create an organization, add an app, and copy its token.
+// Real app token for the "Comfeee" app on accessibility.cloud. Falls back to
+// Sozialhelden's public demo token (from their example widget repo) only if
+// no env var is set, so local clones without .env.local still work for a
+// quick look.
 const DEMO_APP_TOKEN = '7f039b60e27a4d02b13c5ad79fbe9d7b';
 
 export const APP_TOKEN = process.env.NEXT_PUBLIC_AC_APP_TOKEN || DEMO_APP_TOKEN;
