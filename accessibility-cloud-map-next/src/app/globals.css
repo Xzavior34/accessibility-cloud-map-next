@@ -1,0 +1,98 @@
+@import "tailwindcss";
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+@theme {
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-full: #16a34a;
+  --color-partial: #f59e0b;
+  --color-none: #dc2626;
+  --color-unknown: #6b7280;
+  --color-elevator: #7c3aed;
+  --color-escalator: #0891b2;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ─── App's own accessibility settings (text size / high contrast) ─── */
+/* Driven by data attributes set on <html> by useA11ySettings. */
+
+html[data-text-size='large'] {
+  font-size: 112.5%; /* ~18px base */
+}
+html[data-text-size='x-large'] {
+  font-size: 125%; /* ~20px base */
+}
+
+html[data-high-contrast='true'] {
+  --color-accent: #1d4ed8;
+  --color-full: #15803d;
+  --color-partial: #b45309;
+  --color-none: #b91c1c;
+}
+html[data-high-contrast='true'] body {
+  filter: contrast(1.1);
+}
+html[data-high-contrast='true'] .maplibregl-map {
+  filter: contrast(1.15) saturate(1.2);
+}
+
+html[data-reduce-motion='true'] *,
+html[data-reduce-motion='true'] *::before,
+html[data-reduce-motion='true'] *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.focus\:not-sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+.maplibregl-popup-content {
+  padding: 0 !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2) !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 9999px;
+}
